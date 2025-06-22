@@ -61,3 +61,14 @@ def getHomeDataPage():
 
     # print(userLen,typeLen,maxPrice,maxPriceBookName,maxRate,maxPageNum)
     return userLen,typeLen,maxPrice,maxPriceBookName,maxRate,maxPageNum,rateList,rateListNum,createUserList,commentList
+
+def changePassword(uname,passwordData):
+    oldPwd = passwordData['oldPassword']
+    newPwd = passwordData['newPassword']
+    checkPwd = passwordData['checkPassword']
+    user = User.objects.get(username=uname)
+    if oldPwd != user.password: return '原密码不正确'
+    if newPwd != checkPwd:return '密码确认失败'
+
+    user.password = newPwd
+    user.save()

@@ -1,9 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from myApp.models import *
 from django.http import HttpResponseRedirect
 from utils.getPublicData import *
 from utils.getChartData import *
+
+
 # Create your views here.
 def home(request):
     uname = request.session.get('username')
@@ -41,13 +43,15 @@ def login(request):
             messages.error(request, '登录失败，请输入正确用户名与密码')
             return HttpResponseRedirect('/myApp/login')
 
+
 def logOut(request):
     request.session.clear()
     return redirect('login')
 
+
 def register(request):
     if request.method == 'GET':
-        return render(request,'register.html',{})
+        return render(request, 'register.html', {})
     else:
         uname = request.POST.get('username')
         pwd = request.POST.get('password')
@@ -72,3 +76,18 @@ def register(request):
                 message = '创建成功'
                 User.objects.create(username=uname, password=pwd)
         return render(request, 'login.html', {})
+
+
+def selfInfo(request):
+    uname = request.session.get('username')
+    userInfo = User.objects.get(username=uname)
+    print(userInfo.username)
+    if request.method == 'POST':
+        print(request.POST)
+        res = changePassword(uname, request.POST)
+        if res != None:
+            messages.error(request, res)
+            return HttpResponseRedirect('/myApp/selfInfo')
+    return render(request, 'selfInfo.html', {
+        'userInfo': userInfo,
+    })
