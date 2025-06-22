@@ -2,14 +2,26 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from myApp.models import *
 from django.http import HttpResponseRedirect
-
+from utils.getPublicData import *
+from utils.getChartData import *
 # Create your views here.
 def home(request):
     uname = request.session.get('username')
     userInfo = User.objects.get(username=uname)
     print(userInfo.username)
+    userLen, typeLen, maxPrice, maxPriceBookName, maxRate, maxPageNum, rateList, rateListNum, createUserList, commentList = getHomeDataPage()
     return render(request, 'index.html', {
-        'userInfo': userInfo
+        'userInfo': userInfo,
+        'userLen': userLen,
+        'typeLen': typeLen,
+        'maxPrice': maxPrice,
+        'maxPriceBookName': maxPriceBookName,
+        'maxRate': maxRate,
+        'maxPageNum': maxPageNum,
+        'rateList': rateList,
+        'rateListNum': rateListNum,
+        'createUserList': createUserList,
+        'commentList': commentList[:20]
     })
 
 

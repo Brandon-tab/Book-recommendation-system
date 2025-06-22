@@ -16,11 +16,11 @@ from myApp.models import BookList
 class spider(object):
     # init
     def __init__(self, tag, page):
-        self.tag = tag
-        self.page = page
+        self.tag = tag # 图书标签（如"小说"）
+        self.page = page # 分页页码
         self.spiderUrl = 'https://book.douban.com/tag/%s?start=%s'
         self.bookId = 0
-        self.headers = {
+        self.headers = { # 请求头（模拟浏览器）
             'HOST': 'book.douban.com',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
             'Referer': 'https://book.douban.com/tag/',
@@ -173,7 +173,9 @@ class spider(object):
                 comment_len=book[14],
                 commentList=book[15]
             )
-
+# 爬取数据（main()）。
+# 初始化CSV表头（init()，实际未调用）。
+# 清洗数据并存入数据库（save_to_sql()）。
 if __name__ == '__main__':
     spiderObj = spider('小说', 0)
     # spiderObj.main()

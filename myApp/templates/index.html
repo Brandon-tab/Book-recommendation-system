@@ -21,7 +21,6 @@
 
 <body data-sidebar="dark">
 
-<!-- <body data-layout="horizontal" data-topbar="colored"> -->
 
 <!-- Begin page -->
 <div id="layout-wrapper">
@@ -385,7 +384,15 @@
     <!-- ============================================================== -->
     <div class="main-content">
         <div class="page-content">
-
+            <h2>最贵书籍 《{{ maxPriceBookName }}》</h2>
+             <h6>最贵价格</h6>
+            <h2>￥{{ maxPrice }}</h2>
+             <div class="info">种类数量 {{ typeLen }}</div>
+             <div>
+                   用户数量 {{ userLen }}
+             </div>
+              <h6>最高评分</h6>
+              <h2>{{ maxRate }}分</h2>
         </div>
         <!-- End Page-content -->
 
@@ -405,168 +412,18 @@
 <script src="/static/static/js/jquery.sparkline.min.js"></script>
 
 <!--Morris Chart-->
-<script src="/static/static/js/morris.min.js"></script>
-<script src="/static/static/js/raphael.min.js"></script>
+{#<script src="/static/static/js/morris.min.js"></script>#}
+{#<script src="/static/static/js/raphael.min.js"></script>#}
 
-<script src="/static/static/js/dashboard.init.js"></script>
+{#<script src="/static/static/js/dashboard.init.js"></script>#}
         <!-- Responsive Table js -->
         <script src="/static/static/js/rwd-table.min.js"></script>
 
         <!-- Init js -->
         <script src="/static/static/js/table-responsive.init.js"></script>
 <script src="/static/static/js/app.js"></script>
-<script src="/static/js/echarts.js"></script>
+{#<script src="/static/js/echarts.js"></script>#}
 
-<script>
-    var chartDom = document.getElementById('mainTwo');
-
-
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-        title: {
-            subtext: '用户注册时间'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        legend: {
-            top: '5%',
-            left: 'center'
-        },
-        series: [
-            {
-                name: '用户创建时间',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: {{ createUserList | safe }}
-            }
-        ]
-    };
-
-    option && myChart.setOption(option);
-</script>
-<script>
-    var chartDom = document.getElementById('main');
-     let xData = {{ rateList }}
-        let
-    yData = {{ rateListNum }}
-        let
-    xRes = []
-    for (var i = 0; i < 9; i++) {
-        xRes.push(xData[i])
-    }
-    let
-        yRes = []
-    for (var i = 0; i < 9; i++) {
-        yRes.push(yData[i])
-    }
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-        title: {
-
-            subtext: '评分统计柱状图'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['评分',]
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataView: {show: true, readOnly: false},
-                magicType: {show: true, type: ['line', 'bar']},
-                restore: {show: true},
-                saveAsImage: {show: true}
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: 'category',
-                // prettier-ignore
-                data:xRes
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: '评分',
-                type: 'bar',
-                data: yRes,
-                markPoint: {
-                    data: [
-                        {type: 'max', name: 'Max'},
-                        {type: 'min', name: 'Min'}
-                    ]
-                },
-                markLine: {
-                    data: [{type: 'average', name: 'Avg'}]
-                },
-                itemStyle: {
-                    color: '#e66'
-                }
-            }
-        ]
-    };
-    let count = 9;
-    setInterval(function (){
-        if (count >= xData.length){
-            count = 0
-        }
-        xRes.shift()
-        xRes.push(xData[count])
-
-        yRes.shift()
-        yRes.push(yData[count])
-
-        count ++
-
-        myChart.setOption({
-            xAxis: [
-                {
-                    data:xRes
-                }
-            ],
-            series:[
-                {
-                    data:yRes
-                }
-            ]
-        })
-
-    },2000)
-    option && myChart.setOption(option);
-</script>
 </body>
 
 </html>
