@@ -9,6 +9,9 @@ import requests
 from lxml import etree
 import re
 import random
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE','doubanBook.settings')
 django.setup()
 from myApp.models import BookList
