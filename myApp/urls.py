@@ -9,5 +9,6 @@ urlpatterns = [
     path("register/",views.register,name='register'),
     path("selfInfo/", views.selfInfo, name='selfInfo'),
     path("titleCloud/", views.titleCloud, name='titleCloud'),
+    path("summaryCloud/", views.summaryCloud, name='summaryCloud'),
     path("recomBook/", views.recomBook, name='recomBook')
 ]
