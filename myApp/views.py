@@ -105,3 +105,6 @@ def titleCloud(request):
     return render(request, 'titleCloud.html', {
         'userInfo': userInfo,
     })
+
+def recomBook(request):
+    return render(request,'recomBook.html',{ })
