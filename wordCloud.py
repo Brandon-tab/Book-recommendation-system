@@ -6,7 +6,7 @@ from PIL import Image
 from pymysql import *
 
 def get_img(field,targetImageSrc,resImageSrc):
-    conn = connect(host="localhost",user="root",password="123456",database="dbbook",port=3306,charset='utf8mb4')
+    conn = connect(host="localhost",user="root",password="1234",database="dbbook",port=3306,charset='utf8mb4')
     cursor = conn.cursor()
     sql = f"select {field} from booklist"
     cursor.execute(sql)
@@ -39,4 +39,5 @@ def get_img(field,targetImageSrc,resImageSrc):
 
     plt.savefig(resImageSrc,dpi=800,bbox_inches='tight',pad_inches=-0.1)
 
-get_img('title','./static/start.jpg','./static/cloudImg/titleCloud')
+# get_img('title','./static/start.jpg','./static/cloudImg/titleCloud')
+get_img('summary','./static/love.jpg','./static/cloudImg/summaryCloud')
