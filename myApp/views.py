@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from model.index import modelFn
 from myApp.models import *
 from django.http import HttpResponseRedirect
 from utils.getPublicData import *
 from utils.getChartData import *
+import random
 
 
 # Create your views here.
@@ -93,4 +96,19 @@ def selfInfo(request):
     })
 
 def recomBook(request):
-    return render(request,'recomBook.html',{ })
+    uname = request.session.get('username')
+    userInfo = User.objects.get(username=uname)
+    bookIdList = modelFn(int(userInfo.id))
+    bookData = []
+    for i in bookList:
+        for j in bookIdList:
+            if i.id == j:
+                bookData.append(i)
+    #限制最多取前30本推荐书籍
+    bookData = bookData[:30]
+    # random 16 book
+    bookData = random.sample(bookData, 16)
+    return render(request, 'recomBook.html', {
+        'userInfo': userInfo,
+        'bookRes': bookData
+    })
