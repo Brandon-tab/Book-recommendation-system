@@ -120,8 +120,8 @@ def recomBook(request):
                 bookData.append(i)
     #限制最多取前30本推荐书籍
     bookData = bookData[:30]
-    # random 16 book
-    bookData = random.sample(bookData, 16)
+    # random 12 book
+    bookData = random.sample(bookData, 12)
     return render(request, 'recomBook.html', {
         'userInfo': userInfo,
         'bookRes': bookData

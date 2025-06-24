@@ -78,6 +78,9 @@ WSGI_APPLICATION = 'doubanBook.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
         'NAME': 'dbbook',
         "USER": 'root',
         "PASSWORD":"1234",

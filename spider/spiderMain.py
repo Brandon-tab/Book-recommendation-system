@@ -74,10 +74,27 @@ class spider(object):
                     [float(x.text.replace('%', '')) for x in respDetailXpath.xpath('//span[@class="rating_per"]')])
 
                 # summary
+                # summary = ""
+                # for s in [x.text for x in
+                #           respDetailXpath.xpath('//div[@id="link-report"]/span[@class="short"]/div[@class="intro"]/p')]:
+                #     if s: summary += s
                 summary = ""
-                for s in [x.text for x in
-                          respDetailXpath.xpath('//div[@id="link-report"]/span[@class="short"]/div[@class="intro"]/p')]:
-                    if s: summary += s
+                # 方案1：尝试匹配带 span 的结构
+                paragraphs = respDetailXpath.xpath(
+                    '//div[@id="link-report"]/span[@class="short"]/div[@class="intro"]/p')
+                # 方案2：如果方案1没找到，尝试匹配不带 span 的结构
+                if not paragraphs:
+                    paragraphs = respDetailXpath.xpath('//div[@id="link-report"]/div/div[@class="intro"]/p')
+                # 方案3：如果还是没有，直接获取 div 下的所有 p
+                if not paragraphs:
+                    paragraphs = respDetailXpath.xpath('//div[@id="link-report"]//p')
+                # 提取文本并拼接
+                for p in paragraphs:
+                    s = p.text if hasattr(p, 'text') else str(p)
+                    if s and s.strip():
+                        summary += s.strip() + "\n"  # 用换行符分隔段落
+
+                summary = summary.strip()  # 移除首尾空白
 
                 # detailLink
                 detailLink = i
@@ -180,7 +197,7 @@ class spider(object):
 # 初始化CSV表头（init()，实际未调用）。
 # 清洗数据并存入数据库（save_to_sql()）。
 if __name__ == '__main__':
-    spiderObj = spider('小说', 0)
+    spiderObj = spider('名著', 0)
     # spiderObj.main()
     # spiderObj.init()
     spiderObj.save_to_sql()
