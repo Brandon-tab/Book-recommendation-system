@@ -91,3 +91,6 @@ def selfInfo(request):
     return render(request, 'selfInfo.html', {
         'userInfo': userInfo,
     })
+
+def recomBook(request):
+    return render(request,'recomBook.html',{ })
