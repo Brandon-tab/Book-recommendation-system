@@ -91,3 +91,17 @@ def selfInfo(request):
     return render(request, 'selfInfo.html', {
         'userInfo': userInfo,
     })
+
+def titleCloud(request):
+    uname = request.session.get('username')
+    userInfo = User.objects.get(username=uname)
+    print(userInfo.username)
+    if request.method == 'POST':
+        print(request.POST)
+        res = changePassword(uname, request.POST)
+        if res != None:
+            messages.error(request, res)
+            return HttpResponseRedirect('/myApp/selfInfo')
+    return render(request, 'titleCloud.html', {
+        'userInfo': userInfo,
+    })

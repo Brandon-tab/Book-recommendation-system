@@ -132,13 +132,13 @@ class spider(object):
                 continue
 
     def save_to_csv(self, rowData):
-        with open('./spider/temp.csv', 'a', newline='', encoding='utf-8') as f:
+        with open('./temp.csv', 'a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(rowData)
 
     def init(self):
-        if not os.path.exists('./spider/temp.csv'):
-            with open('./spider/temp.csv', 'a', newline='', encoding='utf-8') as f:
+        if not os.path.exists('./temp.csv'):
+            with open('./temp.csv', 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerow(
                     ["bookId", "tag", "title", "cover", "author", "press", "year", "pageNum", "price", "rate",
@@ -147,7 +147,7 @@ class spider(object):
 
     #Deduplication
     def clearData(self):
-        df = pd.read_csv('./spider/temp.csv')
+        df = pd.read_csv('./temp.csv')
         df.dropna(inplace=True)
         df.drop_duplicates(inplace=True)
         #总数居条数为
