@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
     <meta content="Themesbrand" name="author">
-     <link href="/static/static/css/rwd-table.min.css" rel="stylesheet" type="text/css"> <!-- Bootstrap Css -->
+    <link href="/static/static/css/rwd-table.min.css" rel="stylesheet" type="text/css"> <!-- Bootstrap Css -->
     <!-- Bootstrap Css -->
     <link href="/static/static/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css">
     <!-- Icons Css -->
@@ -395,6 +395,25 @@
               <h2>{{ maxRate }}分</h2>
         </div>
         <!-- End Page-content -->
+        <div class="row">
+            <div class = "col-xl-8">
+                <div class = "card">
+                    <div class="card-body">
+                        <h4 class = "card-title mb-4">Book scoring analysis</h4>
+                        <div id = "main" style = "width:100%;height:450px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "col-xl-4">
+                <div class = "card">
+                    <div class = "card-body">
+                        <h4 class="card-title mb-4">User registration time</h4>
+                        <div id = "mainPie" style="width:100%;height:450px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </div>
@@ -422,8 +441,115 @@
         <!-- Init js -->
         <script src="/static/static/js/table-responsive.init.js"></script>
 <script src="/static/static/js/app.js"></script>
-{#<script src="/static/js/echarts.js"></script>#}
+<script src="/static/js/echarts.js"></script>
+<script>
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
 
+    option = {
+      title: {
+        subtext: 'Scoring statistical histogram'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Scoring', ]
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          dataView: { show: true, readOnly: false },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      calculable: true,
+      xAxis: [
+        {
+          type: 'category',
+          // prettier-ignore
+          data: {{ rateList | safe}}
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: 'Scoring',
+          type: 'bar',
+          data: {{ rateListNum}},
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          },
+          itemStyle: {
+            color: '#e64'
+          }
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+</script>
+<script>
+    var chartDom = document.getElementById('mainPie');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      title: {
+        subtext: 'User registration time'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '5%',
+        left: 'center'
+      },
+      series: [
+        {
+          name: 'User registration time',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 40,
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: {{ createUserList | safe}}
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+</script>
 </body>
 
 </html>
