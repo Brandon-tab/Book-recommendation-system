@@ -122,10 +122,14 @@ def recomBook(request):
         for j in bookIdList:
             if i.id == j:
                 bookData.append(i)
-    #限制最多取前30本推荐书籍
+ 
     bookData = bookData[:30]
     # random 12 book
-    bookData = random.sample(bookData, 12)
+    if len(bookData) >= 12:
+     bookData = random.sample(bookData, 12)
+    else:
+     bookData = bookData 
+    
     return render(request, 'recomBook.html', {
         'userInfo': userInfo,
         'bookRes': bookData
