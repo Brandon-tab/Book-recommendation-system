@@ -20,7 +20,7 @@ class spider(object):
     # init
     def __init__(self, tag, page):
         self.tag = tag # 图书标签（如"小说"）
-        self.page = page # 分页页码
+        self.page = page # page
         self.spiderUrl = 'https://book.douban.com/tag/%s?start=%s'
         self.bookId = 0
         self.headers = { # 请求头（模拟浏览器）
@@ -62,11 +62,27 @@ class spider(object):
                 pageNum = re.search('\d{3}',
                                     regex.sub('', "".join(respDetailXpath.xpath('//div[@id="info"]/text()')))).group()
                 # price
+                # try:
+                #     price = re.search('(\d+)\.\d+元?',
+                #                       "".join(respDetailXpath.xpath('//div[@id="info"]/text()'))).group(1)
+                # except:
+                #     price = random.randint(1, 1000)
                 try:
-                    price = re.search('(\d+)\.\d+元?',
-                                      "".join(respDetailXpath.xpath('//div[@id="info"]/text()'))).group(1)
-                except:
-                    price = random.randint(1, 1000)
+                    info_html = respDetailXpath.xpath('//div[@id="info"]')[0]
+                    # 更精确的XPath：匹配紧跟在"定价:"span后的文本
+                    price_text = respDetailXpath.xpath('''
+                        //div[@id="info"]//span[@class="pl"][contains(., "定价:")]
+                        /following-sibling::text()[1]
+                    ''')
+
+                    if price_text:
+                        price_text = price_text[0].strip()
+                        price_match = re.search(r'(\d+\.?\d*)', price_text)
+                        if price_match:
+                            price = price_match.group(1)
+
+                except Exception as e:
+                    price = "0.00"  # 默认随机价格
                 # rate
                 rate = respDetailXpath.xpath('//strong[@property="v:average"]/text()')[0].strip()
                 # startList
@@ -197,7 +213,7 @@ class spider(object):
 # 初始化CSV表头（init()，实际未调用）。
 # 清洗数据并存入数据库（save_to_sql()）。
 if __name__ == '__main__':
-    spiderObj = spider('名著', 0)
+    spiderObj = spider('小说', 0)
+    spiderObj.init()
     # spiderObj.main()
-    # spiderObj.init()
     spiderObj.save_to_sql()
