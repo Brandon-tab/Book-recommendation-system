@@ -197,7 +197,7 @@ class spider(object):
 # 初始化CSV表头（init()，实际未调用）。
 # 清洗数据并存入数据库（save_to_sql()）。
 if __name__ == '__main__':
-    spiderObj = spider('名著', 0)
+    spiderObj = spider('名著', 20)
     # spiderObj.main()
     # spiderObj.init()
     spiderObj.save_to_sql()
