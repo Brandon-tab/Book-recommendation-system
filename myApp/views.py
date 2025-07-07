@@ -125,10 +125,7 @@ def recomBook(request):
  
     bookData = bookData[:30]
     # random 12 book
-    if len(bookData) >= 12:
-     bookData = random.sample(bookData, 12)
-    else:
-     bookData = bookData 
+    bookData = random.sample(bookData, min(12, len(bookData)))
     
     return render(request, 'recomBook.html', {
         'userInfo': userInfo,

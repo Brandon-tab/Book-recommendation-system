@@ -13,8 +13,8 @@ def getHomeDataPage():
     rateList = []
     for i in bookList:
         rateList.append(float(i.rate))
-        if maxPrice < int(i.price):
-            maxPrice = int(i.price)
+        if maxPrice < float(i.price):
+            maxPrice = float(i.price)
             maxPriceBookName = i.title
 
         typeLen.append(i.tag)
